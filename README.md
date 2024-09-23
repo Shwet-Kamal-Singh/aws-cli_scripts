@@ -1,148 +1,156 @@
-utils
-config.sh
-helpers.sh
+# AWS CLI Scripts for Cloud Management
 
-Explanation:
-This script prompts the user for their AWS Access Key ID, Secret Access Key, default region, and output format.
-It then creates the necessary AWS configuration files in the ~/.aws directory.
+This repository contains a collection of Bash scripts for managing various AWS services using the AWS CLI. These scripts are organized into different categories for easy navigation and use.
 
-Explanation:
-This script includes several helper functions for AWS CLI operations, such as checking if the AWS CLI is installed, configuring it, listing S3 buckets, checking the status of an EC2 instance, and displaying help information.
+## Table of Contents
 
+- [Directory Structure](#directory-structure)
+- [Categories](#categories)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Disclaimer](#disclaimer)
+- [Contact](#contact)
 
-scripts
-s3
-download_file.sh
-upload_file.sh
-
-Explanation:
-This script defines a function to download a file from an S3 bucket using the AWS CLI.
-It checks for the correct number of arguments and uses aws s3 cp to perform the download.
-The downloaded file will be saved in the current directory.
-
-Explanation:
-This script defines a function to upload a file to an S3 bucket using the AWS CLI.
-It checks for the correct number of arguments and verifies if the specified file exists before attempting the upload.
-The file is uploaded using aws s3 cp, and success or failure messages are displayed accordingly.
-
-rds
-create_db_instance.sh   
-delete_db_instance.sh
-list_db_instances.sh
-
-Explanation:
-This script defines a function to create an RDS DB instance using the AWS CLI.
-It checks for the correct number of arguments, which include the DB instance identifier, class, engine type, username, and password.
-The script uses aws rds create-db-instance to create the instance and provides success or failure messages based on the outcome. The allocated storage is set to 20 GB and the instance is not publicly accessible by default.
-
-Explanation:
-This script defines a function to delete an RDS DB instance using the AWS CLI.
-It checks for the correct number of arguments, which should be the DB instance identifier.
-The script uses aws rds delete-db-instance to perform the deletion, with the --skip-final-snapshot option to avoid taking a final snapshot before deletion.
-Success or failure messages are displayed based on the outcome of the operation.
-
-Explanation:
-This script defines a function to list all RDS DB instances using the AWS CLI.
-It uses aws rds describe-db-instances to retrieve and display the list of instances along with their identifiers and statuses in a table format.
-Success or failure messages are provided based on the outcome of the operation.
-
-
-lambda
-create_function.sh
-delete_function.sh
-list_functions.sh
-
-Explanation:
-This script defines a function to create an AWS Lambda function using the AWS CLI.
-It checks for the correct number of arguments, which include the function name, runtime, IAM role, handler, and the path to the zip file containing the function code.
-The script verifies if the specified zip file exists before attempting to create the function.
-It uses aws lambda create-function to create the Lambda function and provides success or failure messages based on the outcome of the operation.
-Explanation:
-This script defines a function to delete an AWS Lambda function using the AWS CLI.
-It checks for the correct number of arguments, which should be the function name.
-The script uses aws lambda delete-function to perform the deletion and provides success or failure messages based on the outcome of the operation.
-Explanation:
-This script defines a function to list all AWS Lambda functions using the AWS CLI.
-It uses aws lambda list-functions to retrieve and display the list of functions along with their names, runtimes, and last modified dates in a table format.
-Success or failure messages are provided based on the outcome of the operation.
-
-iam
-create_user.sh
-delete_user.sh
-list_users.sh
-
-Explanation:
-This script prompts the user to input a username for the new IAM user.
-It checks if the username is not empty before proceeding.
-The script uses aws iam create-user to create the IAM user and provides success or failure messages based on the outcome of the operation.
-Explanation:
-This script prompts the user to input the username of the IAM user they wish to delete.
-It checks if the username is not empty before proceeding.
-The script uses aws iam delete-user to delete the IAM user and provides success or failure messages based on the outcome of the operation.
-Explanation:
-This script defines a function to list all IAM users using the AWS CLI.
-It uses aws iam list-users to retrieve and display the list of users along with their usernames and creation dates in a table format.
-Success or failure messages are provided based on the outcome of the operation.
+## Directory Structure
+```
+aws-cli_scripts/
+│
+├── README.md
+├── requirements.txt        # Dependencies (if any)
+├── scripts/
+│   ├── ec2/
+│   │   ├── launch_instance.sh
+│   │   ├── terminate_instance.sh
+│   │   └── list_instances.sh
+│   ├── s3/
+│   │   ├── upload_file.sh
+│   │   ├── download_file.sh
+│   │   └── list_buckets.sh
+│   ├── iam/
+│   │   ├── create_user.sh
+│   │   ├── delete_user.sh
+│   │   └── list_users.sh
+│   ├── rds/
+│   │   ├── create_db_instance.sh
+│   │   ├── delete_db_instance.sh
+│   │   └── list_db_instances.sh
+│   ├── lambda/
+│   │   ├── create_function.sh
+│   │   ├── delete_function.sh
+│   │   └── list_functions.sh
+│   ├── cloudformation/
+│   │   ├── create_stack.sh
+│   │   ├── delete_stack.sh
+│   │   └── list_stacks.sh
+│   └── dynamodb/
+│       ├── create_table.sh
+│       ├── delete_table.sh
+│       └── list_tables.sh
+│
+└── utils/                  # Utility scripts or functions
+    ├── config.sh           # Configuration settings
+    └── helpers.sh          # Helper functions
+```
 
 
-ec2
-launch_instance.sh
-list_instances.sh
-terminate_instance.sh
+## Categories
 
-Explanation:
-This script prompts the user for the AMI ID, instance type, key pair name, and security group ID required to launch an EC2 instance.
-It checks that all fields are filled before proceeding.
-The script uses aws ec2 run-instances to launch the instance and retrieves the instance ID of the newly created instance, providing success or failure messages based on the outcome of the operation.
+1. **[Utils](./utils/README.md)**: Scripts for configuration and helper functions for AWS CLI operations.
+   - **config.sh**: Prompts for AWS configuration details and creates necessary configuration files.
+   - **helpers.sh**: Contains helper functions for checking AWS CLI installation, configuring it, and listing S3 buckets.
 
-Explanation:
-This script defines a function to list all EC2 instances using the AWS CLI.
-It uses aws ec2 describe-instances to retrieve and display the list of instances along with their IDs, types, states, and launch times in a table format.
-Success or failure messages are provided based on the outcome of the operation.
+2. **[S3](./scripts/s3/README.md)**: Scripts for managing S3 buckets and objects.
+   - **download_file.sh**: Downloads a file from an S3 bucket.
+   - **upload_file.sh**: Uploads a file to an S3 bucket.
 
-Explanation:
-This script prompts the user to input the Instance ID of the EC2 instance they wish to terminate.
-It checks if the Instance ID is not empty before proceeding.
-The script uses aws ec2 terminate-instances to terminate the specified instance and provides success or failure messages based on the outcome of the operation.
+3. **[RDS](./scripts/rds/README.md)**: Scripts for managing RDS instances.
+   - **create_db_instance.sh**: Creates an RDS DB instance.
+   - **delete_db_instance.sh**: Deletes an RDS DB instance.
+   - **list_db_instances.sh**: Lists all RDS DB instances.
 
-dynamodb
-create_table.sh
-delete_table.sh
-list_tables.sh
+4. **[Lambda](./scripts/lambda/README.md)**: Scripts for managing AWS Lambda functions.
+   - **create_function.sh**: Creates an AWS Lambda function.
+   - **delete_function.sh**: Deletes an AWS Lambda function.
+   - **list_functions.sh**: Lists all AWS Lambda functions.
 
-Explanation:
-This script prompts the user for the table name, primary key, and primary key type required to create a DynamoDB table.
-It checks that all fields are filled before proceeding.
-The script uses aws dynamodb create-table to create the table with a provisioned throughput of 5 read and write capacity units, providing success or failure messages based on the outcome of the operation.
+5. **[IAM](./scripts/iam/README.md)**: Scripts for managing IAM users.
+   - **create_user.sh**: Creates a new IAM user.
+   - **delete_user.sh**: Deletes an IAM user.
+   - **list_users.sh**: Lists all IAM users.
 
-Explanation:
-This script prompts the user to input the name of the DynamoDB table they wish to delete.
-It checks if the table name is not empty before proceeding.
-The script uses aws dynamodb delete-table to delete the specified table and provides success or failure messages based on the outcome of the operation.
+6. **[EC2](./scripts/ec2/README.md)**: Scripts for managing EC2 instances.
+   - **launch_instance.sh**: Launches a new EC2 instance.
+   - **list_instances.sh**: Lists all EC2 instances.
+   - **terminate_instance.sh**: Terminates an EC2 instance.
 
-Explanation:
-This script defines a function to list all DynamoDB tables using the AWS CLI.
-It uses aws dynamodb list-tables to retrieve and display the list of tables in a table format.
-Success or failure messages are provided based on the outcome of the operation.
+7. **[DynamoDB](./scripts/dynamodb/README.md)**: Scripts for managing DynamoDB tables.
+   - **create_table.sh**: Creates a DynamoDB table.
+   - **delete_table.sh**: Deletes a DynamoDB table.
+   - **list_tables.sh**: Lists all DynamoDB tables.
 
+8. **[CloudFormation](./scripts/cloudformation/README.md)**: Scripts for managing CloudFormation stacks.
+   - **create_stack.sh**: Creates a CloudFormation stack.
+   - **delete_stack.sh**: Deletes a CloudFormation stack.
+   - **list_stacks.sh**: Lists all CloudFormation stacks.
 
-cloudformation
-create_stack.sh
-delete_stack.sh
-list_stacks.sh
+## Prerequisites
 
+- AWS CLI installed and configured
+- Bash shell environment
+- Basic understanding of AWS services
+- Specific permissions may be required for certain operations (check individual script documentation)
 
-Explanation:
-This script prompts the user for the stack name, template file path, and any parameters required to create a CloudFormation stack.
-It checks that the stack name and template file are provided before proceeding.
-The script constructs the parameters string for the AWS CLI command and uses aws cloudformation create-stack to create the stack, providing success or failure messages based on the outcome of the operation.
+## Usage
 
-Explanation:
-This script prompts the user to input the name of the CloudFormation stack they wish to delete.
-It checks if the stack name is not empty before proceeding.
-The script uses aws cloudformation delete-stack to initiate the deletion of the specified stack and provides success or failure messages based on the outcome of the operation.
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/Shwet-Kamal-Singh/aws-cli_scripts.git
+   ```
 
-Explanation:
-This script defines a function to list all CloudFormation stacks using the AWS CLI.
-It uses aws cloudformation list-stacks to retrieve and display the list of stacks, filtering out those that are in the DELETE_COMPLETE state, and presents the results in a table format.
-Success or failure messages are provided based on the outcome of the operation.
+2. Navigate to the aws-cli_scripts directory:
+   ```bash
+   cd aws-cli_scripts
+   ```
+
+3. Choose the category of scripts you need and navigate to that directory.
+
+4. Read the README.md file in the category directory for specific usage instructions.
+
+5. Make the script executable if needed:
+   ```bash
+   chmod +x script_name.sh
+   ```
+
+6. Run the script:
+   ```bash
+   ./script_name.sh
+   ```
+
+## Contributing
+
+Contributions to this project are welcome. Please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and test thoroughly.
+4. Submit a pull request with a clear description of your changes.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Shwet-Kamal-Singh/aws-cli_scripts/edit/blob/main/LICENSE) file for details.
+
+![Original Creator](https://img.shields.io/badge/Original%20Creator-Shwet%20Kamal%20Singh-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+## Disclaimer
+
+These scripts are provided as-is, without warranty. Use caution when running these scripts, especially those requiring elevated privileges, as they can significantly impact your system.
+
+## Contact
+
+For any inquiries or permissions, please contact:
+- Email: shwetkamalsingh55@gmail.com
+- LinkedIn: https://www.linkedin.com/in/shwet-kamal-singh/
+- GitHub: https://github.com/Shwet-Kamal-Singh
